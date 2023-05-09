@@ -1,0 +1,36 @@
+{
+  "pluginAlias": "ScriptSwitch",
+  "pluginType": "accessory",
+  "singular": false,
+  "schema": {
+    "type": "object",
+    "required": [
+      "name",
+      "get_state_script",
+      "on_state_value"
+    ],
+    "additionalProperties": true,
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Name of the accessory instance."
+      },
+      "set_state_on_script": {
+        "type": "string",
+        "description": "Script to set state ON, optional."
+      },
+      "set_state_off_script": {
+        "type": "string",
+        "description": "Script to set state OFF, optional."
+      },
+      "get_state_script": {
+        "type": "string",
+        "description": "Script to get current state."
+      },
+      "on_state_value": {
+        "type": "string",
+        "description": "Return value from get_state_script which corresponds to ON state."
+      }
+    }
+  }
+}
