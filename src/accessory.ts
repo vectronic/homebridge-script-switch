@@ -52,7 +52,7 @@ class ScriptSwitch implements AccessoryPlugin {
 
                 let on;
                 try {
-                    const stdout = await new Promise((resolve, reject) => {
+                    const stdout: string = await new Promise((resolve, reject) => {
                         exec(this.getStateScript, {},
                             (error, stdout) => {
                                 if (error) {
@@ -62,8 +62,8 @@ class ScriptSwitch implements AccessoryPlugin {
                                 resolve(stdout);
                             });
                     });
-                    log.debug('set state script returned: ' + stdout);
-                    on = (stdout === this.onStateValue);
+                    log.debug('get state script returned: ' + stdout);
+                    on = (stdout.trim() === this.onStateValue);
                 } catch (err: any) {
                     log.error(`get state exec error: ${err}`);
                     callback(err);
