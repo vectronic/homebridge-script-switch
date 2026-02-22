@@ -1,10 +1,7 @@
-import {
+import type {
     AccessoryConfig,
     AccessoryPlugin,
     API,
-    CharacteristicEventTypes,
-    CharacteristicGetCallback,
-    CharacteristicSetCallback,
     CharacteristicValue,
     HAP,
     Logging,
@@ -13,7 +10,6 @@ import {
 import { exec } from 'child_process';
 
 let hap: HAP;
-
 
 class ScriptSwitch implements AccessoryPlugin {
 
@@ -48,9 +44,7 @@ class ScriptSwitch implements AccessoryPlugin {
 
         this.switchService = new hap.Service.Switch(this.name);
         this.switchService.getCharacteristic(hap.Characteristic.On)
-            .on(CharacteristicEventTypes.GET, async (callback: CharacteristicGetCallback) => {
-
-                let on;
+            .onGet(async (): Promise<CharacteristicValue> => {
                 try {
                     const stdout: string = await new Promise((resolve, reject) => {
                         exec(this.getStateScript, {},
@@ -63,34 +57,27 @@ class ScriptSwitch implements AccessoryPlugin {
                             });
                     });
                     log.debug('get state script returned: ' + stdout);
-                    on = (stdout.trim() === this.onStateValue);
-                } catch (err: any) {
+                    const on = (stdout.trim() === this.onStateValue);
+                    log.debug('Returning switch state: ' + (on ? 'ON' : 'OFF'));
+                    return on;
+                } catch (err: unknown) {
                     log.error(`get state exec error: ${err}`);
-                    callback(err);
-                    return;
+                    throw err;
                 }
-
-                log.debug('Returning switch state: ' + (on? 'ON': 'OFF'));
-                callback(undefined, on);
             })
-            .on(CharacteristicEventTypes.SET, async (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-
+            .onSet(async (value: CharacteristicValue): Promise<void> => {
                 const newOn = value as boolean;
 
                 if (newOn && (this.setOnStateScript === undefined)) {
                     log.debug('Ignoring switch state ON as set_state_on_script is not configured');
-                    callback();
-
                     return;
                 }
 
                 if (!newOn && (this.setOffStateScript === undefined)) {
                     log.debug('Ignoring switch state OFF as set_state_off_script is not configured');
-                    callback();
-
                     return;
                 }
-                log.debug('Setting switch state: ' + (newOn ? 'ON': 'OFF'));
+                log.debug('Setting switch state: ' + (newOn ? 'ON' : 'OFF'));
 
                 const setStateScript = (newOn ? this.setOnStateScript : this.setOffStateScript) as string;
 
@@ -106,14 +93,12 @@ class ScriptSwitch implements AccessoryPlugin {
                             });
                     });
                     log.debug('set state script returned: ' + stdout);
-                } catch (err: any) {
+                } catch (err: unknown) {
                     log.error(`set state exec error: ${err}`);
-                    callback(err);
-                    return;
+                    throw err;
                 }
 
-                log.debug('Switch state set to: ' + (newOn ? 'ON': 'OFF'));
-                callback();
+                log.debug('Switch state set to: ' + (newOn ? 'ON' : 'OFF'));
             });
 
         this.informationService = new hap.Service.AccessoryInformation()
@@ -134,10 +119,7 @@ class ScriptSwitch implements AccessoryPlugin {
     }
 }
 
-/*
- * Initializer function called when the plugin is loaded.
- */
-export = (api: API) => {
+export default (api: API) => {
     hap = api.hap;
     api.registerAccessory('ScriptSwitch', ScriptSwitch);
 };

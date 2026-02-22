@@ -1,12 +1,13 @@
 {
   "displayName": "Homebridge Script Switch",
   "name": "@vectronic/homebridge-script-switch",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A switch plugin for Homebridge which integrates with shell scripts",
+  "type": "module",
   "main": "dist/accessory.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/vectronic/homebridge-script-switch.git"
+    "url": "git+https://github.com/vectronic/homebridge-script-switch.git"
   },
   "bugs": {
     "url": "https://github.com/vectronic/homebridge-script-switch/issues"
@@ -22,17 +23,18 @@
   "author": "vectronic",
   "license": "MIT",
   "engines": {
-    "node": ">=14",
-    "homebridge": ">=1.1.0"
+    "node": "^20.18.0 || ^22.10.0 || ^24.0.0",
+    "homebridge": "^1.8.0 || ^2.0.0-beta.0"
   },
   "devDependencies": {
-    "@types/node": "20.1.1",
-    "@typescript-eslint/eslint-plugin": "5.59.5",
-    "@typescript-eslint/parser": "5.59.5",
-    "eslint": "8.40.0",
-    "homebridge": "1.6.1",
-    "rimraf": "5.0.0",
-    "ts-node": "10.9.1",
-    "typescript": "5.0.4"
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
+    "homebridge": "^2.0.0-beta.55",
+    "nodemon": "^3.1.11",
+    "rimraf": "^6.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.4"
   }
 }
