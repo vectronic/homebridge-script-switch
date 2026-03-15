@@ -13,7 +13,7 @@
 |---------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
 | name                      | The name for the accessory instance.                                                                                                                    |
 | set_state_on_script       | Script to set state ON, optional. If not provided, setting switch On from Home App is not possible.                                                     |
-| set_state_on_script       | Script to set state OFF, optional. If not provided, setting switch Off from Home App is not possible.                                                   |
+| set_state_off_script       | Script to set state OFF, optional. If not provided, setting switch Off from Home App is not possible.                                                   |
 | get_state_script          | Script to get the current switch state. Should output on stdout text signifying "On" which matches `on_state_value` and anything else ot signify "Off". |
 | on_state_value            | Return value from get_state_script which corresponds to ON state.                                                                                       |
 
